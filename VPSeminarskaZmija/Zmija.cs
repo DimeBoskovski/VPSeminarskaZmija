@@ -38,6 +38,7 @@ namespace VPSeminarskaZmija
             TeloZmija.AddLast(new Point(10, 9));
             //TeloZmija.AddLast(new Point(10, 8));
             //TeloZmija.AddLast(new Point(10, 7));
+            // komentar
 
             Hrana = NovaHrana(1, 1); // ovaj povik mora da e posle inicijalizacija na TeloZmija
             Znamence = false;
