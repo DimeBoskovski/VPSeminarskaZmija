@@ -11,6 +11,7 @@ namespace VPSeminarskaZmija
     
     public class Zmija
     {
+        // proba
         public int Poeni { get; set; }
         public int Brzina { get; set; }
         public int StranaKvadrat { get; set; }
