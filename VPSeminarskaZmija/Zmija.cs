@@ -22,7 +22,6 @@ namespace VPSeminarskaZmija
         public Point Hrana { get; set; }
         public Point BonusHrana { get; set; }
         public bool Znamence { get; set; }
-        public bool Znamence2 { get; set; }
 
         
         public Zmija(int sirina, int visina)
@@ -44,7 +43,6 @@ namespace VPSeminarskaZmija
 
             Hrana = NovaHrana(1, 1); // ovaj povik mora da e posle inicijalizacija na TeloZmija
             Znamence = false;
-            Znamence2 = false;
             BonusHrana = new Point(sirina, visina);
         }
 
@@ -157,13 +155,9 @@ namespace VPSeminarskaZmija
 
             if (pomosna.X == BonusHrana.X && pomosna.Y == BonusHrana.Y)
             {
-                //Hrana = NovaHrana(sirina, visina);
-                Poeni += 10;
+                //Poeni += 10;
                 Znamence = false;
-                Znamence2 = true;
             }
-            //else
-                //Znamence2 = false;
         }
 
         public void Crtanje(Graphics g)

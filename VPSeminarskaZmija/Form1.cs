@@ -14,6 +14,7 @@ namespace VPSeminarskaZmija
     {
         public Zmija zmija;
         public int bonusVreme;
+        //public Rectangle panel1; PROBAAAAAAAAAAAAAAAA
 
         // Sirinata na formata ne smej da bide pomala 120 pikseli
         // t.e SIRINA*Zmija.StranaKvadrat >= 120
@@ -28,6 +29,8 @@ namespace VPSeminarskaZmija
             InitializeComponent();
             bonusVreme = 10;
             NovaIgra();
+            DoubleBuffered = true;
+            //panel1 = new Rectangle(0, 0, this.Width, this.Height);
         }
 
         public void NovaIgra()
@@ -38,11 +41,11 @@ namespace VPSeminarskaZmija
             timer1.Interval = zmija.Brzina;
 
             // podesuvanje na dimenziite na stazata
-            this.Width = this.Width - panel1.Width + zmija.StranaKvadrat * SIRINA + 1;
-            this.Height = this.Height - panel1.Height + zmija.StranaKvadrat * VISINA + statusStrip1.Height + 1;
+            //this.Width = this.Width - panel1.Width + zmija.StranaKvadrat * SIRINA + 1;
+            //this.Height = this.Height - panel1.Height + zmija.StranaKvadrat * VISINA + statusStrip1.Height + 1;
             this.MinimumSize = new Size(this.Width, this.Height);
             this.MaximumSize = new Size(this.Width, this.Height);
-            panel1.Size = new Size(zmija.StranaKvadrat * SIRINA, zmija.StranaKvadrat * VISINA);
+            //panel1.Size = new Size(zmija.StranaKvadrat * SIRINA, zmija.StranaKvadrat * VISINA);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -95,19 +98,18 @@ namespace VPSeminarskaZmija
                         timer1.Enabled = true;
                     break;
             }
-            Invalidate(true);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        /*private void panel1_Paint(object sender, PaintEventArgs e)
         {
             //Bitmap BitMapa = new Bitmap(panel1.Width, panel1.Height - statusStrip1.Height);
             Bitmap BitMapa = new Bitmap(zmija.StranaKvadrat * SIRINA + 1, zmija.StranaKvadrat * VISINA + 1);
-            using (Graphics g = Graphics.FromImage(BitMapa))
+            using (Graphics g = e.Graphics)
             {
                 zmija.Crtanje(g);
                 panel1.CreateGraphics().DrawImageUnscaled(BitMapa, 0, 0);
             }
-        }
+        }*/
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -122,21 +124,20 @@ namespace VPSeminarskaZmija
         {
             bonusVreme--;
             toolStripStatusLabel2.Text = bonusVreme.ToString();
-            if (bonusVreme == 0)
+            if (bonusVreme == 0 || zmija.Znamence==false)
             {
-                //toolStripStatusLabel2.Text = "";
+                zmija.Poeni += 3 * bonusVreme;
                 bonusVreme = 10;
                 zmija.BonusHrana = new Point(this.Width, this.Height);
                 timer2.Stop();
-
+                toolStripStatusLabel2.Text = "0";
                 zmija.Znamence = false;
             }
-            //if (zmija.Znamence2 == true)
-            //{
-                //bonusVreme = 0;
-                //timer2.Stop();
-                //zmija.Znamence2 = false;
-            //}
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            zmija.Crtanje(e.Graphics);
         }
     }
 }
