@@ -22,10 +22,12 @@ namespace VPSeminarskaZmija
         public Point Hrana { get; set; }
         public Point BonusHrana { get; set; }
         public bool Znamence { get; set; }
+        public bool Znamence2 { get; set; }
+
         
-        public Zmija()
+        public Zmija(int sirina, int visina)
         {
-            Poeni = 2;
+            Poeni = 0;
             Brzina = 100; // vo mili sekundi
             StranaKvadrat = 10; // dimenzija na kvadratotot od koj e sostavena zmijata
             Nasoka = NASOKA.DOLU; // pocetna nasoka levo
@@ -42,6 +44,8 @@ namespace VPSeminarskaZmija
 
             Hrana = NovaHrana(1, 1); // ovaj povik mora da e posle inicijalizacija na TeloZmija
             Znamence = false;
+            Znamence2 = false;
+            BonusHrana = new Point(sirina, visina);
         }
 
         // funkcija koja ni sluzi za generiranje na nova hrana
@@ -156,7 +160,10 @@ namespace VPSeminarskaZmija
                 //Hrana = NovaHrana(sirina, visina);
                 Poeni += 10;
                 Znamence = false;
+                Znamence2 = true;
             }
+            //else
+                //Znamence2 = false;
         }
 
         public void Crtanje(Graphics g)

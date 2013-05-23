@@ -32,7 +32,7 @@ namespace VPSeminarskaZmija
 
         public void NovaIgra()
         {
-            zmija = new Zmija();
+            zmija = new Zmija(this.Width, this.Height);
             timer1.Start();
             toolStripStatusLabel1.Text = "Поени " + zmija.Poeni.ToString();
             timer1.Interval = zmija.Brzina;
@@ -124,11 +124,19 @@ namespace VPSeminarskaZmija
             toolStripStatusLabel2.Text = bonusVreme.ToString();
             if (bonusVreme == 0)
             {
+                //toolStripStatusLabel2.Text = "";
                 bonusVreme = 10;
+                zmija.BonusHrana = new Point(this.Width, this.Height);
                 timer2.Stop();
 
                 zmija.Znamence = false;
             }
+            //if (zmija.Znamence2 == true)
+            //{
+                //bonusVreme = 0;
+                //timer2.Stop();
+                //zmija.Znamence2 = false;
+            //}
         }
     }
 }
