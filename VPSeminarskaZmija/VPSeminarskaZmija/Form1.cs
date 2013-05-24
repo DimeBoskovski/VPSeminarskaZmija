@@ -13,8 +13,6 @@ namespace VPSeminarskaZmija
     public partial class Form1 : Form
     {
         public Zmija zmija;
-        public int bonusVreme;
-        //public Rectangle panel1; PROBAAAAAAAAAAAAAAAA
 
         // Sirinata na formata ne smej da bide pomala 120 pikseli
         // t.e SIRINA*Zmija.StranaKvadrat >= 120
@@ -22,39 +20,46 @@ namespace VPSeminarskaZmija
         // Visina na formata ne smej na bide pomala od 120 pikseli
         // t.e VISINA*Zmija.StranaKvadrat >= 120
         public const int SIRINA = 30; // kolku kvadratcina po sirina ima stazata
-        public const int VISINA = 30; // kolku kvadratcina po visina ima stazata
+        public const int VISINA = 20; // kolku kvadratcina po visina ima stazata
 
         public Form1()
         {
             InitializeComponent();
-            bonusVreme = 10;
             NovaIgra();
-            DoubleBuffered = true;
-            //panel1 = new Rectangle(0, 0, this.Width, this.Height);
         }
 
         public void NovaIgra()
         {
-            zmija = new Zmija(this.Width, this.Height);
+            zmija = new Zmija();
             timer1.Start();
             toolStripStatusLabel1.Text = "Поени " + zmija.Poeni.ToString();
             timer1.Interval = zmija.Brzina;
 
             // podesuvanje na dimenziite na stazata
-            //this.Width = this.Width - panel1.Width + zmija.StranaKvadrat * SIRINA + 1;
-            //this.Height = this.Height - panel1.Height + zmija.StranaKvadrat * VISINA + statusStrip1.Height + 1;
+            this.Width = this.Width - pictureBox1.Width + zmija.StranaKvadrat * SIRINA + 1;
+            this.Height = this.Height - pictureBox1.Height + zmija.StranaKvadrat * VISINA + statusStrip1.Height + 1;
             this.MinimumSize = new Size(this.Width, this.Height);
             this.MaximumSize = new Size(this.Width, this.Height);
-            //panel1.Size = new Size(zmija.StranaKvadrat * SIRINA, zmija.StranaKvadrat * VISINA);
+            pictureBox1.Size = new Size(zmija.StranaKvadrat * SIRINA, zmija.StranaKvadrat * VISINA);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             zmija.Premesti(SIRINA, VISINA);
             toolStripStatusLabel1.Text = "Поени " + zmija.Poeni;
-            Invalidate(true);
+            //Invalidate(true);
 
-            if (zmija.SamoUnistuvanje())
+            if (!zmija.KrajNaIgra)
+            {
+                Bitmap BitMapa = new Bitmap(zmija.StranaKvadrat * SIRINA + 1, zmija.StranaKvadrat * VISINA + 1);
+                using (Graphics g = Graphics.FromImage(BitMapa))
+                {
+                    zmija.Crtanje(g, SIRINA, VISINA);
+                    pictureBox1.CreateGraphics().DrawImageUnscaled(BitMapa, 0, 0);
+                }
+            }
+
+            if (zmija.SamoUnistuvanje() || zmija.KrajNaIgra)
             {
                 timer1.Enabled = false;
                 MessageBox.Show("Резултат: " + zmija.Poeni.ToString() + " поени.");
@@ -67,11 +72,6 @@ namespace VPSeminarskaZmija
                 {
                     this.Close();
                 }
-            }
-
-            if (zmija.Znamence)
-            {
-                timer2.Start();
             }
         }
 
@@ -100,17 +100,6 @@ namespace VPSeminarskaZmija
             }
         }
 
-        /*private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            //Bitmap BitMapa = new Bitmap(panel1.Width, panel1.Height - statusStrip1.Height);
-            Bitmap BitMapa = new Bitmap(zmija.StranaKvadrat * SIRINA + 1, zmija.StranaKvadrat * VISINA + 1);
-            using (Graphics g = e.Graphics)
-            {
-                zmija.Crtanje(g);
-                panel1.CreateGraphics().DrawImageUnscaled(BitMapa, 0, 0);
-            }
-        }*/
-
         private void Form1_Load(object sender, EventArgs e)
         {
             // ova e gotov kod od Predavanje 09 - WindowsForms3
@@ -120,24 +109,15 @@ namespace VPSeminarskaZmija
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            bonusVreme--;
-            toolStripStatusLabel2.Text = bonusVreme.ToString();
-            if (bonusVreme == 0 || zmija.Znamence==false)
-            {
-                zmija.Poeni += 3 * bonusVreme;
-                bonusVreme = 10;
-                zmija.BonusHrana = new Point(this.Width, this.Height);
-                timer2.Stop();
-                toolStripStatusLabel2.Text = "0";
-                zmija.Znamence = false;
-            }
-        }
-
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            zmija.Crtanje(e.Graphics);
+            //int a;
+            /*Bitmap BitMapa = new Bitmap(zmija.StranaKvadrat * SIRINA + 1, zmija.StranaKvadrat * VISINA + 1);
+            using (Graphics g = Graphics.FromImage(BitMapa))
+            {
+                zmija.Crtanje(g, SIRINA, VISINA);
+                pictureBox1.CreateGraphics().DrawImageUnscaled(BitMapa, 0, 0);
+            }*/
         }
     }
 }
