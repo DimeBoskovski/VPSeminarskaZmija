@@ -13,6 +13,7 @@ namespace VPSeminarskaZmija
     {
         // proba
         // proba2
+        // kom kico
         public int Poeni { get; set; }
         public int Brzina { get; set; }
         public int StranaKvadrat { get; set; }
